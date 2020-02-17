@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LineMemo</string>
+
+    <string name="title">제목</string>
+    <string name="content">내용</string>
+    <string name="picture">사진</string>
 </resources>
