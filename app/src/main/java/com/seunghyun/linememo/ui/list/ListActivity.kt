@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.databinding.ActivityListBinding
-import com.seunghyun.linememo.ui.new_memo.NewMemoActivity
+import com.seunghyun.linememo.ui.edit.EditActivity
 
 class ListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +14,7 @@ class ListActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityListBinding>(this, R.layout.activity_list)
 
         binding.addButton.setOnClickListener {
-            startActivity(Intent(this, NewMemoActivity::class.java))
+            startActivity(Intent(this, EditActivity::class.java))
         }
     }
 }
