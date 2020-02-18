@@ -22,7 +22,8 @@
             android:drawablePadding="4dp"
             android:gravity="center"
             android:onClick="@{() -> vm.onAlbumButtonClick()}"
-            android:padding="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="@string/album"
             android:textColor="?android:attr/textColorPrimary" />
 
@@ -35,7 +36,8 @@
             android:drawablePadding="4dp"
             android:gravity="center"
             android:onClick="@{() -> vm.onCameraButtonClick()}"
-            android:padding="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="@string/camera"
             android:textColor="?android:attr/textColorPrimary" />
 
@@ -48,7 +50,8 @@
             android:drawablePadding="4dp"
             android:gravity="center"
             android:onClick="@{() -> vm.onLinkButtonClick()}"
-            android:padding="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="@string/link"
             android:textColor="?android:attr/textColorPrimary" />
     </LinearLayout>
