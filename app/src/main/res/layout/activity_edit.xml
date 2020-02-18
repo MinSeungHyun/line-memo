@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <data>
+
+        <variable
+            name="vm"
+            type="com.seunghyun.linememo.ui.edit.EditViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,7 +39,6 @@
             android:inputType="textMultiLine"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="8dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@id/pictureText"
@@ -63,8 +71,15 @@
             android:id="@+id/imagesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/space_between_images"
+            android:paddingEnd="@dimen/space_between_images"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="horizontal"
+            app:items="@{vm.imageItems}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.2"
-            app:layout_constraintTop_toBottomOf="@id/pictureText" />
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintTop_toBottomOf="@id/pictureText"
+            tools:listitem="@layout/item_image" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
