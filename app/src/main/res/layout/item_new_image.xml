@@ -11,22 +11,45 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:onClick="@{() -> vm.onAddNewImageButtonClick()}"
-        android:orientation="vertical"
-        android:padding="8dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/add_new_picture"
-            android:src="@drawable/ic_add_black_24dp" />
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_new_picture"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_photo_library_black_24dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:onClick="@{() -> vm.onAlbumButtonClick()}"
+            android:padding="12dp"
+            android:text="@string/album"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_camera_alt_black_24dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:onClick="@{() -> vm.onCameraButtonClick()}"
+            android:padding="12dp"
+            android:text="@string/camera"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_link_black_24dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:onClick="@{() -> vm.onLinkButtonClick()}"
+            android:padding="12dp"
+            android:text="@string/link"
             android:textColor="?android:attr/textColorPrimary" />
     </LinearLayout>
 </layout>

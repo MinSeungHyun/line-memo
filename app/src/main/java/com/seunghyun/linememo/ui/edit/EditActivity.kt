@@ -58,6 +58,8 @@ class EditActivity : AppCompatActivity() {
     }
 
     enum class Event {
-        START_IMAGE_PICKER
+        START_IMAGE_PICKER,
+        START_CAMERA,
+        ADD_LINK
     }
 }
