@@ -1,19 +1,30 @@
-package com.seunghyun.linememo.ui.edit
+package com.seunghyun.linememo.ui.edit.utils
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.databinding.ItemImageBinding
 import com.seunghyun.linememo.databinding.ItemNewImageBinding
+import com.seunghyun.linememo.ui.edit.EditViewModel
+import com.seunghyun.linememo.ui.edit.ImageItem
 
 private const val TYPE_IMAGE = 0
 private const val TYPE_NEW_IMAGE_BUTTON = 1
 
 class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var items = arrayListOf<ImageItem>()
+    private val items = arrayListOf<ImageItem>()
+
+    fun updateItems(newItems: ArrayList<ImageItem>) {
+        val callback = ImageItemDiffCallback(items, newItems)
+        val result = DiffUtil.calculateDiff(callback)
+        items.clear()
+        items.addAll(newItems)
+        result.dispatchUpdatesTo(this)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

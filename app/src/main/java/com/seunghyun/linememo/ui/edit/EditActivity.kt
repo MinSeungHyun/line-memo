@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.databinding.ActivityEditBinding
+import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
 import com.seunghyun.linememo.utils.addItem
 
 private const val IMAGE_PICKER_REQUEST_CODE = 77
