@@ -2,9 +2,10 @@ package com.seunghyun.linememo.ui.edit
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.seunghyun.linememo.data.MemoRepository
 import com.seunghyun.linememo.utils.removeItem
 
-class EditViewModel : ViewModel() {
+class EditViewModel(repository: MemoRepository) : ViewModel() {
     val eventTrigger = MutableLiveData<EditActivity.Event>()
     val imageItems = MutableLiveData(arrayListOf<ImageItem>())
 
