@@ -10,6 +10,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -19,8 +21,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.databinding.ActivityEditBinding
+import com.seunghyun.linememo.databinding.PopupAddNewImageBinding
 import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
 import com.seunghyun.linememo.utils.addItem
+import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.dialog_add_link.*
 import java.io.File
 import java.io.FileOutputStream
@@ -31,6 +35,7 @@ private const val REQUEST_CAMERA = 1
 class EditActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProvider(this).get(EditViewModel::class.java) }
     private lateinit var imageUri: Uri
+    private lateinit var addImagePopup: PopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +43,15 @@ class EditActivity : AppCompatActivity() {
         DataBindingUtil.setContentView<ActivityEditBinding>(this, R.layout.activity_edit).apply {
             vm = viewModel
             lifecycleOwner = this@EditActivity
+        }
 
-            imagesRecyclerView.apply {
-                layoutManager = LinearLayoutManager(this@EditActivity, LinearLayoutManager.HORIZONTAL, false)
-                adapter = ImagesRecyclerAdapter(viewModel)
-            }
+        imagesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@EditActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = ImagesRecyclerAdapter(viewModel)
+        }
+
+        addImageButton.setOnClickListener {
+            showAddImagePopup()
         }
 
         viewModel.eventTrigger.observe(this, Observer {
@@ -53,6 +62,17 @@ class EditActivity : AppCompatActivity() {
                 Event.IMAGE_LOADING_ERROR -> showLoadingErrorToast()
             }
         })
+    }
+
+    private fun showAddImagePopup() {
+        val binding = DataBindingUtil.inflate<PopupAddNewImageBinding>(layoutInflater,
+            R.layout.popup_add_new_image, rootView, false)
+        binding.vm = viewModel
+        addImagePopup = PopupWindow(binding.root, addImageButton.width, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            elevation = 8f
+            isOutsideTouchable = true
+            showAsDropDown(addImageButton)
+        }
     }
 
     private fun startImagePicker() {
@@ -122,6 +142,11 @@ class EditActivity : AppCompatActivity() {
 
     private fun showLoadingErrorToast() {
         Toast.makeText(this, R.string.image_loading_failed, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        addImagePopup.dismiss()
     }
 
     enum class Event {

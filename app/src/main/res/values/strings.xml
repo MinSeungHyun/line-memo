@@ -2,6 +2,7 @@
     <string name="app_name">LineMemo</string>
 
     <string name="write_memo">메모 작성하기</string>
+    <string name="add_images">사진 추가하기</string>
 
     <string name="title">제목</string>
     <string name="content">내용</string>

@@ -13,14 +13,10 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.databinding.ItemImageBinding
-import com.seunghyun.linememo.databinding.ItemNewImageBinding
 import com.seunghyun.linememo.ui.edit.EditViewModel
 import com.seunghyun.linememo.ui.edit.ImageItem
 
-private const val TYPE_IMAGE = 0
-private const val TYPE_NEW_IMAGE_BUTTON = 1
-
-class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView.Adapter<ImagesRecyclerAdapter.ImageViewHolder>() {
     private val items = arrayListOf<ImageItem>()
 
     fun updateItems(newItems: ArrayList<ImageItem>) {
@@ -31,30 +27,14 @@ class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-
-        return if (viewType == TYPE_IMAGE) {
-            val binding = DataBindingUtil.inflate<ItemImageBinding>(layoutInflater, R.layout.item_image, parent, false)
-            ImageViewHolder(binding)
-        } else {
-            val binding = DataBindingUtil.inflate<ItemNewImageBinding>(layoutInflater, R.layout.item_new_image, parent, false)
-            NewImageButtonViewHolder(binding)
-        }
+        val binding = DataBindingUtil.inflate<ItemImageBinding>(layoutInflater, R.layout.item_image, parent, false)
+        return ImageViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
-        is ImageViewHolder -> holder.bind(items[position])
-        is NewImageButtonViewHolder -> holder.bind()
-        else -> throw TypeCastException("Cannot find ViewHolder")
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == items.size) TYPE_NEW_IMAGE_BUTTON
-        else TYPE_IMAGE
-    }
-
-    override fun getItemCount() = items.size + 1
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) = holder.bind(items[position])
+    override fun getItemCount() = items.size
 
     inner class ImageViewHolder(private val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ImageItem) {
@@ -70,12 +50,6 @@ class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView
                     override fun onResourceReady(_1: Drawable?, _2: Any?, _3: Target<Drawable>?, _4: DataSource?, _5: Boolean) = false
                 })
                 .into(binding.imageView)
-        }
-    }
-
-    inner class NewImageButtonViewHolder(private val binding: ItemNewImageBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
-            binding.vm = viewModel
         }
     }
 }
