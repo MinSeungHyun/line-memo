@@ -35,7 +35,7 @@ private const val REQUEST_CAMERA = 1
 class EditActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProvider(this).get(EditViewModel::class.java) }
     private lateinit var imageUri: Uri
-    private lateinit var addImagePopup: PopupWindow
+    private var addImagePopup: PopupWindow? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,7 +146,7 @@ class EditActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        addImagePopup.dismiss()
+        addImagePopup?.dismiss()
     }
 
     enum class Event {
