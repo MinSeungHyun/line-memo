@@ -11,4 +11,7 @@ data class Memo(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "content") val content: String,
     @ColumnInfo(name = "images") val images: List<ImageItem>
-)
+) {
+    fun isValid() = title.isNotBlank() || content.isNotBlank() || images.isNotEmpty()
+    fun isNotValid() = !isValid()
+}

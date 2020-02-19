@@ -5,14 +5,14 @@ import androidx.room.*
 @Dao
 interface MemoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(memo: Memo)
+    suspend fun insert(memo: Memo)
 
     @Query("SELECT * FROM memo")
-    fun loadAll(): List<Memo>
+    suspend fun loadAll(): List<Memo>
 
     @Update(onConflict = OnConflictStrategy.ABORT)
-    fun update(memo: Memo)
+    suspend fun update(memo: Memo)
 
     @Delete
-    fun delete(memo: Memo)
+    suspend fun delete(memo: Memo)
 }

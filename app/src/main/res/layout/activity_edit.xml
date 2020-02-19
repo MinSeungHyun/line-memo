@@ -24,6 +24,7 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:padding="16dp"
+            android:text="@={vm.title}"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +43,7 @@
             android:paddingEnd="16dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
+            android:text="@={vm.content}"
             app:layout_constraintBottom_toTopOf="@id/pictureText"
             app:layout_constraintTop_toBottomOf="@id/titleEditText" />
 

@@ -7,9 +7,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Menu
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
@@ -48,7 +51,23 @@ class EditActivity : AppCompatActivity() {
             vm = viewModel
             lifecycleOwner = this@EditActivity
         }
+        initView()
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.edit_activity_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.saveButton -> {
+            viewModel.onSaveButtonClick()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun initView() {
         imagesRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@EditActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = ImagesRecyclerAdapter(viewModel)
@@ -63,7 +82,12 @@ class EditActivity : AppCompatActivity() {
                 Event.START_IMAGE_PICKER -> startImagePicker()
                 Event.START_CAMERA -> startCamera()
                 Event.ADD_LINK -> startAddLinkDialog()
-                Event.IMAGE_LOADING_ERROR -> showLoadingErrorToast()
+                Event.MEMO_SAVED -> {
+                    showToast(R.string.saved)
+                    finish()
+                }
+                Event.IMAGE_LOADING_ERROR -> showToast(R.string.image_loading_failed)
+                Event.NOTHING_TO_SAVE -> showToast(R.string.nothing_to_save)
             }
         })
     }
@@ -112,7 +136,7 @@ class EditActivity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_IMAGE_PICKER -> {
                 val uri = data?.data ?: run {
-                    showLoadingErrorToast()
+                    showToast(R.string.image_loading_failed)
                     return super.onActivityResult(requestCode, resultCode, data)
                 }
                 val copiedUri = copyImageToStorage(uri)
@@ -125,8 +149,8 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLoadingErrorToast() {
-        Toast.makeText(this, R.string.image_loading_failed, Toast.LENGTH_LONG).show()
+    private fun showToast(@StringRes stringId: Int) {
+        Toast.makeText(this, stringId, Toast.LENGTH_LONG).show()
     }
 
     override fun onPause() {
@@ -138,6 +162,8 @@ class EditActivity : AppCompatActivity() {
         START_IMAGE_PICKER,
         START_CAMERA,
         ADD_LINK,
-        IMAGE_LOADING_ERROR
+        IMAGE_LOADING_ERROR,
+        NOTHING_TO_SAVE,
+        MEMO_SAVED
     }
 }
