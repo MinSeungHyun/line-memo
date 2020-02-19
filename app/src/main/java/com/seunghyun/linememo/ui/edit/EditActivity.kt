@@ -4,10 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.ViewGroup
@@ -24,10 +21,10 @@ import com.seunghyun.linememo.databinding.ActivityEditBinding
 import com.seunghyun.linememo.databinding.PopupAddNewImageBinding
 import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
 import com.seunghyun.linememo.utils.addItem
+import com.seunghyun.linememo.utils.copyImageToStorage
+import com.seunghyun.linememo.utils.getImagePathForCurrent
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.dialog_add_link.*
-import java.io.File
-import java.io.FileOutputStream
 
 private const val REQUEST_IMAGE_PICKER = 0
 private const val REQUEST_CAMERA = 1
@@ -83,7 +80,7 @@ class EditActivity : AppCompatActivity() {
 
     private fun startCamera() = Intent(MediaStore.ACTION_IMAGE_CAPTURE).run {
         resolveActivity(packageManager)
-        val file = getImageFileForCurrent()
+        val file = getImagePathForCurrent()
         imageUri = FileProvider.getUriForFile(this@EditActivity, "${packageName}.provider", file)
         putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         startActivityForResult(this, REQUEST_CAMERA)
@@ -120,25 +117,6 @@ class EditActivity : AppCompatActivity() {
             else -> return super.onActivityResult(requestCode, resultCode, data)
         }
     }
-
-    private fun copyImageToStorage(uri: Uri): Uri {
-        val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
-        } else {
-            @Suppress("DEPRECATION")
-            MediaStore.Images.Media.getBitmap(contentResolver, uri)
-        }
-        return saveBitmapToStorage(bitmap)
-    }
-
-    private fun saveBitmapToStorage(bitmap: Bitmap): Uri {
-        val path = getImageFileForCurrent()
-        val fos = FileOutputStream(path)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-        return Uri.parse(path.path)
-    }
-
-    private fun getImageFileForCurrent() = File(filesDir, "${System.currentTimeMillis()}.jpg")
 
     private fun showLoadingErrorToast() {
         Toast.makeText(this, R.string.image_loading_failed, Toast.LENGTH_LONG).show()
