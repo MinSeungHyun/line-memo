@@ -34,10 +34,11 @@ class MemoRecyclerAdapter(private val viewModel: ListViewModel) : RecyclerView.A
     class MemoViewHolder(private val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memo: Memo) {
             binding.item = memo
+            binding.thumbnailImage.setImageDrawable(null)
             if (memo.images.isNotEmpty()) {
                 Glide.with(binding.root.context)
                     .load(memo.images[0].path)
-                    .sizeMultiplier(0.5f)
+                    .centerCrop()
                     .into(binding.thumbnailImage)
             }
         }

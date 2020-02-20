@@ -18,15 +18,17 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/space_between_memos"
         android:background="@color/backgroundColorFloating"
-        android:elevation="8dp">
+        android:elevation="4dp">
 
         <ImageView
             android:id="@+id/thumbnailImage"
             android:layout_width="0dp"
             android:layout_height="100dp"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/picture"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="1:1"
+            app:calculateDimensionRatio="@{item}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,11 +45,18 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toTopOf="@id/contentText"
+            app:layout_constraintBottom_toTopOf="@id/centerGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/thumbnailImage"
             app:layout_constraintTop_toTopOf="@id/thumbnailImage"
             tools:text="Memo Title" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centerGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:calculateGuidePercent="@{item}" />
 
         <TextView
             android:id="@+id/contentText"
@@ -62,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="@id/thumbnailImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/titleText"
-            app:layout_constraintTop_toBottomOf="@id/titleText"
+            app:layout_constraintTop_toBottomOf="@id/centerGuideline"
             tools:text="Memo content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,4 +3,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="space_between_images">4dp</dimen>
     <dimen name="space_between_memos">8dp</dimen>
+    <dimen name="zero">0dp</dimen>
 </resources>
