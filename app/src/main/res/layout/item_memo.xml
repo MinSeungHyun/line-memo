@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="vm"
+            type="com.seunghyun.linememo.ui.list.ListViewModel" />
+
+        <variable
             name="item"
             type="com.seunghyun.linememo.data.Memo" />
     </data>
@@ -73,5 +77,17 @@
             app:layout_constraintStart_toStartOf="@id/titleText"
             app:layout_constraintTop_toBottomOf="@id/centerGuideline"
             tools:text="Memo content" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{(v) -> vm.onMemoItemClick(v, item)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

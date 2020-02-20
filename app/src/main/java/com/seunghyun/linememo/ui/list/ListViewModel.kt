@@ -11,6 +11,8 @@ import com.seunghyun.linememo.ui.edit.EditActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+const val KEY_MEMO_ITEM = "memoItem"
+
 class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     val memos = MutableLiveData(arrayListOf<Memo>())
 
@@ -26,5 +28,13 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     fun onAddButtonClick(view: View) {
         val context = view.context
         context.startActivity(Intent(context, EditActivity::class.java))
+    }
+
+    fun onMemoItemClick(view: View, memo: Memo) {
+        val context = view.context
+        val intent = Intent(context, EditActivity::class.java).apply {
+            putExtra(KEY_MEMO_ITEM, memo)
+        }
+        context.startActivity(intent)
     }
 }

@@ -21,11 +21,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.data.AppDatabase
+import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
 import com.seunghyun.linememo.databinding.ActivityEditBinding
 import com.seunghyun.linememo.databinding.PopupAddNewImageBinding
 import com.seunghyun.linememo.ui.edit.utils.EditViewModelFactory
 import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
+import com.seunghyun.linememo.ui.list.KEY_MEMO_ITEM
 import com.seunghyun.linememo.utils.addItem
 import com.seunghyun.linememo.utils.copyImageToStorage
 import com.seunghyun.linememo.utils.getImagePathForCurrent
@@ -39,7 +41,8 @@ class EditActivity : AppCompatActivity() {
     private val viewModel by lazy {
         val dao = AppDatabase.getInstance(this).memoDao()
         val repository = MemoRepository(dao)
-        ViewModelProvider(this, EditViewModelFactory(repository)).get(EditViewModel::class.java)
+        val inputMemo = intent.getSerializableExtra(KEY_MEMO_ITEM) as Memo?
+        ViewModelProvider(this, EditViewModelFactory(repository, inputMemo)).get(EditViewModel::class.java)
     }
     private lateinit var imageUri: Uri
     private var addImagePopup: PopupWindow? = null

@@ -9,12 +9,13 @@ import com.seunghyun.linememo.utils.removeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EditViewModel(private val repository: MemoRepository) : ViewModel() {
+class EditViewModel(private val repository: MemoRepository, private val inputMemo: Memo? = null) : ViewModel() {
     val eventTrigger = MutableLiveData<EditActivity.Event>()
     val isEditing = MutableLiveData(true)
     val title = MutableLiveData("")
     val content = MutableLiveData("")
     val imageItems = MutableLiveData(arrayListOf<ImageItem>())
+    val isFirstEdit = inputMemo != null
 
     fun onAlbumButtonClick() {
         eventTrigger.value = EditActivity.Event.START_IMAGE_PICKER

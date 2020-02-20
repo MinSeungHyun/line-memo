@@ -31,10 +31,13 @@ class MemoRecyclerAdapter(private val viewModel: ListViewModel) : RecyclerView.A
     override fun getItemCount() = viewModel.memos.value?.size ?: 0
     override fun onBindViewHolder(holder: MemoViewHolder, position: Int) = holder.bind(viewModel.memos.value!![position])
 
-    class MemoViewHolder(private val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MemoViewHolder(private val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memo: Memo) {
-            binding.item = memo
-            binding.thumbnailImage.setImageDrawable(null)
+            binding.apply {
+                vm = viewModel
+                item = memo
+                thumbnailImage.setImageDrawable(null)
+            }
             if (memo.images.isNotEmpty()) {
                 Glide.with(binding.root.context)
                     .load(memo.images[0].path)

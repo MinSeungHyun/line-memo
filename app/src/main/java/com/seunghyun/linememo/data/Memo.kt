@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.seunghyun.linememo.ui.edit.ImageItem
+import java.io.Serializable
 
 @Entity
 data class Memo(
@@ -11,7 +12,7 @@ data class Memo(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "content") val content: String,
     @ColumnInfo(name = "images") val images: List<ImageItem>
-) {
+) : Serializable {
     fun isValid() = title.isNotBlank() || content.isNotBlank() || images.isNotEmpty()
     fun isNotValid() = !isValid()
 }
