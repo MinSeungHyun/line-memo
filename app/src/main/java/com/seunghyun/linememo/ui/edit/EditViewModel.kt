@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class EditViewModel(private val repository: MemoRepository) : ViewModel() {
     val eventTrigger = MutableLiveData<EditActivity.Event>()
+    val isEditing = MutableLiveData(true)
     val title = MutableLiveData("")
     val content = MutableLiveData("")
     val imageItems = MutableLiveData(arrayListOf<ImageItem>())

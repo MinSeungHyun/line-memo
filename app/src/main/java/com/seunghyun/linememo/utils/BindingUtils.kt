@@ -1,16 +1,18 @@
 package com.seunghyun.linememo.utils
 
+import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.databinding.BindingAdapter
+import androidx.databinding.BindingConversion
 import androidx.recyclerview.widget.RecyclerView
 import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.ui.edit.ImageItem
 import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
 import com.seunghyun.linememo.ui.list.utils.MemoRecyclerAdapter
 
-object BindingAdapters {
+object BindingUtils {
     @BindingAdapter("app:items")
     @JvmStatic
     fun bindRecyclerViewImageItems(recyclerView: RecyclerView, items: ArrayList<ImageItem>) {
@@ -44,4 +46,8 @@ object BindingAdapters {
         params.dimensionRatio = "1:1"
         imageView.layoutParams = params
     }
+
+    @BindingConversion
+    @JvmStatic
+    fun booleanToVisibility(isShowing: Boolean) = if (isShowing) View.VISIBLE else View.INVISIBLE
 }

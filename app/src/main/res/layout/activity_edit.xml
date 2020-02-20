@@ -13,7 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
         <EditText
             android:id="@+id/titleEditText"
@@ -25,8 +26,22 @@
             android:inputType="text"
             android:padding="16dp"
             android:text="@={vm.title}"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:visibility="@{vm.isEditing}"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@={vm.title}"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="@{!vm.isEditing}"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
@@ -44,8 +59,30 @@
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
             android:text="@={vm.content}"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            android:visibility="@{vm.isEditing}"
             app:layout_constraintBottom_toTopOf="@id/pictureText"
             app:layout_constraintTop_toBottomOf="@id/titleEditText" />
+
+        <TextView
+            android:id="@+id/contentText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fadeScrollbars="false"
+            android:gravity="top"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            android:text="@={vm.content}"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            android:visibility="@{!vm.isEditing}"
+            app:layout_constraintBottom_toTopOf="@id/pictureText"
+            app:layout_constraintTop_toBottomOf="@id/titleText"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp" />
 
         <TextView
             android:id="@+id/pictureText"
