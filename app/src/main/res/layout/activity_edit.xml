@@ -92,13 +92,13 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:paddingStart="@dimen/space_between_images"
-            android:paddingEnd="@dimen/space_between_images"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="horizontal"
             app:items="@{vm.imageItems}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.3"
             app:layout_constraintTop_toBottomOf="@id/pictureText"
+            tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_image" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.seunghyun.linememo.data.Memo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/space_between_memos"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="@dimen/space_between_memos"
+        android:background="@color/backgroundColorFloating"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/thumbnailImage"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/picture"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@{item.title}"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/contentText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/thumbnailImage"
+            app:layout_constraintTop_toTopOf="@id/thumbnailImage"
+            tools:text="Memo Title" />
+
+        <TextView
+            android:id="@+id/contentText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{item.content}"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/thumbnailImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/titleText"
+            app:layout_constraintTop_toBottomOf="@id/titleText"
+            tools:text="Memo content" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
