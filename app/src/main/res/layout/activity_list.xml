@@ -28,7 +28,7 @@
             android:id="@+id/memoRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="true"
+            android:clipToPadding="false"
             android:paddingTop="@dimen/space_between_memos"
             android:paddingBottom="@dimen/space_between_memos"
             app:items="@{vm.memos}"
