@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
+import com.seunghyun.linememo.utils.SingleLiveEvent
 import com.seunghyun.linememo.utils.removeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditViewModel(private val repository: MemoRepository, private val inputMemo: Memo? = null) : ViewModel() {
-    val eventTrigger = MutableLiveData<EditActivity.Event>()
+    val eventTrigger = SingleLiveEvent<EditActivity.Event>()
     val isEditing = MutableLiveData(false)
     val title = MutableLiveData("")
     val content = MutableLiveData("")
