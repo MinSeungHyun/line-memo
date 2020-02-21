@@ -40,7 +40,7 @@
             android:onClick="@{() -> vm.onDeleteImageButtonClick(item)}"
             android:padding="4dp"
             android:src="@drawable/ic_remove_circle_red_24dp"
-            android:visibility="@{vm.isFirstEdit ? View.VISIBLE : View.GONE}"
+            android:visibility="@{vm.isEditing ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@id/imageView"
             app:layout_constraintTop_toTopOf="@id/imageView" />
 

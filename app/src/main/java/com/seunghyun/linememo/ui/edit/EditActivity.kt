@@ -109,6 +109,8 @@ class EditActivity : AppCompatActivity() {
         })
         viewModel.isEditing.observe(this, Observer {
             updateMenuItem()
+            //item_image.xml 에는 lifecycleOwner 가 없기 때문에 이미지 삭제 버튼 업데이트를 위해 다시 binding 해야한다.
+            imagesRecyclerView.adapter?.notifyDataSetChanged()
         })
     }
 
