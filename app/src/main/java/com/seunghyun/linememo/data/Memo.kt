@@ -16,4 +16,11 @@ data class Memo(
 ) : Serializable {
     fun isValid() = title.isNotBlank()
     fun isNotValid() = !isValid()
+
+    override fun equals(other: Any?): Boolean {
+        val otherMemo = other as? Memo ?: return false
+        return otherMemo.createdMillis == createdMillis
+    }
+
+    override fun hashCode() = createdMillis.hashCode()
 }
