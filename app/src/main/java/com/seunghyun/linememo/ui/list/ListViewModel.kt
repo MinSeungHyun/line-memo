@@ -16,6 +16,7 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     val startActivityForResult = SingleLiveEvent<Memo?>()
     val scrollToTop = SingleLiveEvent<Void>()
     val memos = MutableLiveData(arrayListOf<Memo>())
+    private var newMemoInserted = false
 
     init {
         updateAllMemos()
@@ -35,6 +36,7 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     }
 
     fun onMemoCreated(memo: Memo) {
+        newMemoInserted = true
         val memos = memos.value ?: return
         memos.add(0, memo)
         this.memos.value = memos
@@ -51,5 +53,12 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
 
     fun onMemoDeleted(deletedMemo: Memo) {
         memos.removeItem(deletedMemo)
+    }
+
+    fun onRecyclerViewUpdated() {
+        if (newMemoInserted) {
+            scrollToTop.call()
+            newMemoInserted = false
+        }
     }
 }
