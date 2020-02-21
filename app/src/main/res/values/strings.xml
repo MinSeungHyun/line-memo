@@ -17,10 +17,10 @@
     <string name="delete">삭제</string>
 
     <string name="image_loading_failed">이미지를 불러오는 데 실패했습니다.</string>
-    <string name="nothing_to_save">저장할 내용이 없습니다.</string>
+    <string name="enter_title">제목을 입력해주세요.</string>
+    <string name="empty_content">내용이 없습니다.</string>
     <string name="saved">저장되었습니다.</string>
     <string name="deleted">삭제되었습니다.</string>
     <string name="type_link">추가할 링크를 입력해주세요</string>
     <string name="link_prefix">https://</string>
-
 </resources>

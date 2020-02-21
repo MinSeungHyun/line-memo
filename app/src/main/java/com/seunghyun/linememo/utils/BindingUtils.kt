@@ -1,7 +1,6 @@
 package com.seunghyun.linememo.utils
 
 import android.view.View
-import androidx.constraintlayout.widget.Guideline
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
 import androidx.recyclerview.widget.RecyclerView
@@ -23,17 +22,6 @@ object BindingUtils {
     fun bindRecyclerViewMemoItems(recyclerView: RecyclerView, items: ArrayList<Memo>) {
         val adapter = recyclerView.adapter as MemoRecyclerAdapter
         adapter.updateItems(items)
-    }
-
-    @BindingAdapter("app:calculateGuidePercent")
-    @JvmStatic
-    fun calculateGuidePercent(guideline: Guideline, memo: Memo) {
-        val guidePercent = when {
-            memo.title.isBlank() -> 0f
-            memo.content.isBlank() -> 1f
-            else -> 0.5f
-        }
-        guideline.setGuidelinePercent(guidePercent)
     }
 
     @BindingConversion

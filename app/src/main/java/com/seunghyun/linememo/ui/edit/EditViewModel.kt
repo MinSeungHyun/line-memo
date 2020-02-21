@@ -41,7 +41,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     fun onSaveButtonClick() {
         val memo = createMemoItem()
         if (memo.isNotValid()) {
-            eventTrigger.value = EditActivity.Event.NothingToSave
+            eventTrigger.value = EditActivity.Event.InvalidMemo
             return
         }
         saveOrUpdateMemo(memo)

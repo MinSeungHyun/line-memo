@@ -14,6 +14,6 @@ data class Memo(
     @ColumnInfo(name = "content") val content: String,
     @ColumnInfo(name = "images") val images: List<ImageItem>
 ) : Serializable {
-    fun isValid() = title.isNotBlank() || content.isNotBlank() || images.isNotEmpty()
+    fun isValid() = title.isNotBlank()
     fun isNotValid() = !isValid()
 }
