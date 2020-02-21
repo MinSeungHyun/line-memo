@@ -1,19 +1,18 @@
 package com.seunghyun.linememo.ui.list
 
-import android.content.Intent
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
-import com.seunghyun.linememo.ui.edit.EditActivity
+import com.seunghyun.linememo.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 const val KEY_MEMO_ITEM = "memoItem"
 
 class ListViewModel(private val repository: MemoRepository) : ViewModel() {
+    val startActivityForResult = SingleLiveEvent<Memo?>()
     val memos = MutableLiveData(arrayListOf<Memo>())
 
     init {
@@ -25,16 +24,26 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
         memos.postValue(memoList)
     }
 
-    fun onAddButtonClick(view: View) {
-        val context = view.context
-        context.startActivity(Intent(context, EditActivity::class.java))
+    fun onAddButtonClick() {
+        startActivityForResult.value = null
     }
 
-    fun onMemoItemClick(view: View, memo: Memo) {
-        val context = view.context
-        val intent = Intent(context, EditActivity::class.java).apply {
-            putExtra(KEY_MEMO_ITEM, memo)
-        }
-        context.startActivity(intent)
+    fun onMemoItemClick(memo: Memo) {
+        startActivityForResult.value = memo
+    }
+
+    fun onMemoCreated(memo: Memo) {
+        val memos = memos.value ?: return
+        memos.add(0, memo)
+        this.memos.value = memos
+    }
+
+    fun onMemoEdited(newMemo: Memo) {
+        val memos = memos.value ?: return
+        val oldMemo = memos.find { it.createdMillis == newMemo.createdMillis } ?: return
+        val oldMemoIndex = memos.indexOf(oldMemo)
+        memos.removeAt(oldMemoIndex)
+        memos.add(oldMemoIndex, newMemo)
+        this.memos.value = memos
     }
 }

@@ -27,21 +27,21 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     fun onAlbumButtonClick() {
-        eventTrigger.value = EditActivity.Event.START_IMAGE_PICKER
+        eventTrigger.value = EditActivity.Event.StartImagePicker
     }
 
     fun onCameraButtonClick() {
-        eventTrigger.value = EditActivity.Event.START_CAMERA
+        eventTrigger.value = EditActivity.Event.StartCamera
     }
 
     fun onLinkButtonClick() {
-        eventTrigger.value = EditActivity.Event.ADD_LINK
+        eventTrigger.value = EditActivity.Event.AddLink
     }
 
     fun onSaveButtonClick() {
         val memo = createMemoItem()
         if (memo.isNotValid()) {
-            eventTrigger.value = EditActivity.Event.NOTHING_TO_SAVE
+            eventTrigger.value = EditActivity.Event.NothingToSave
             return
         }
         saveOrUpdateMemo(memo)
@@ -68,12 +68,12 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
                 if (isFirstEdit) repository.insert(memo)
                 else repository.update(memo)
             }
-            eventTrigger.value = EditActivity.Event.MEMO_SAVED
+            eventTrigger.value = EditActivity.Event.MemoSaved(memo)
         }
     }
 
     fun onImageLoadingError(item: ImageItem) {
         imageItems.removeItem(item)
-        eventTrigger.value = EditActivity.Event.IMAGE_LOADING_ERROR
+        eventTrigger.value = EditActivity.Event.ImageLoadingError
     }
 }

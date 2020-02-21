@@ -89,15 +89,12 @@ class EditActivity : AppCompatActivity() {
 
         viewModel.eventTrigger.observe(this, Observer {
             when (it!!) {
-                Event.START_IMAGE_PICKER -> startImagePicker()
-                Event.START_CAMERA -> startCamera()
-                Event.ADD_LINK -> startAddLinkDialog()
-                Event.MEMO_SAVED -> {
-                    showToast(R.string.saved)
-                    finish()
-                }
-                Event.IMAGE_LOADING_ERROR -> showToast(R.string.image_loading_failed)
-                Event.NOTHING_TO_SAVE -> showToast(R.string.nothing_to_save)
+                Event.StartImagePicker -> startImagePicker()
+                Event.StartCamera -> startCamera()
+                Event.AddLink -> startAddLinkDialog()
+                is Event.MemoSaved -> onMemoSaved((it as Event.MemoSaved).memo)
+                Event.ImageLoadingError -> showToast(R.string.image_loading_failed)
+                Event.NothingToSave -> showToast(R.string.nothing_to_save)
             }
         })
         viewModel.isEditing.observe(this, Observer {
@@ -176,6 +173,13 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
+    private fun onMemoSaved(memo: Memo) {
+        val intent = Intent().apply { putExtra(KEY_MEMO_ITEM, memo) }
+        setResult(Activity.RESULT_OK, intent)
+        showToast(R.string.saved)
+        finish()
+    }
+
     private fun showToast(@StringRes stringId: Int) {
         Toast.makeText(this, stringId, Toast.LENGTH_LONG).show()
     }
@@ -185,12 +189,12 @@ class EditActivity : AppCompatActivity() {
         addImagePopup?.dismiss()
     }
 
-    enum class Event {
-        START_IMAGE_PICKER,
-        START_CAMERA,
-        ADD_LINK,
-        IMAGE_LOADING_ERROR,
-        NOTHING_TO_SAVE,
-        MEMO_SAVED
+    sealed class Event {
+        object StartImagePicker : Event()
+        object StartCamera : Event()
+        object AddLink : Event()
+        object ImageLoadingError : Event()
+        object NothingToSave : Event()
+        class MemoSaved(val memo: Memo) : Event()
     }
 }
