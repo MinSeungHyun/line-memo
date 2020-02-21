@@ -29,6 +29,7 @@ import com.seunghyun.linememo.databinding.PopupAddNewImageBinding
 import com.seunghyun.linememo.ui.edit.utils.EditViewModelFactory
 import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
 import com.seunghyun.linememo.ui.list.KEY_MEMO_ITEM
+import com.seunghyun.linememo.ui.list.RESULT_DELETED
 import com.seunghyun.linememo.utils.addItem
 import com.seunghyun.linememo.utils.copyImageToStorage
 import com.seunghyun.linememo.utils.getImagePathForCurrent
@@ -75,6 +76,10 @@ class EditActivity : AppCompatActivity() {
             viewModel.onEditButtonClick()
             true
         }
+        R.id.deleteButton -> {
+            viewModel.onDeleteButtonClick()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -95,9 +100,11 @@ class EditActivity : AppCompatActivity() {
                 Event.StartImagePicker -> startImagePicker()
                 Event.StartCamera -> startCamera()
                 Event.AddLink -> startAddLinkDialog()
-                is Event.MemoSaved -> onMemoSaved((it as Event.MemoSaved).memo)
                 Event.ImageLoadingError -> showToast(R.string.image_loading_failed)
                 Event.NothingToSave -> showToast(R.string.nothing_to_save)
+                Event.Finish -> finish()
+                is Event.MemoSaved -> onMemoSaved((it as Event.MemoSaved).memo)
+                is Event.MemoDeleted -> onMemoDeleted((it as Event.MemoDeleted).memo)
             }
         })
         viewModel.isEditing.observe(this, Observer {
@@ -183,6 +190,13 @@ class EditActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun onMemoDeleted(memo: Memo) {
+        val intent = Intent().apply { putExtra(KEY_MEMO_ITEM, memo) }
+        setResult(RESULT_DELETED, intent)
+        showToast(R.string.deleted)
+        finish()
+    }
+
     private fun showToast(@StringRes stringId: Int) {
         Toast.makeText(this, stringId, Toast.LENGTH_LONG).show()
     }
@@ -198,6 +212,8 @@ class EditActivity : AppCompatActivity() {
         object AddLink : Event()
         object ImageLoadingError : Event()
         object NothingToSave : Event()
+        object Finish : Event()
         class MemoSaved(val memo: Memo) : Event()
+        class MemoDeleted(val memo: Memo) : Event()
     }
 }

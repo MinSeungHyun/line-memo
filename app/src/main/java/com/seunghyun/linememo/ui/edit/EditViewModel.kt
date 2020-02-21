@@ -51,6 +51,14 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
         isEditing.value = true
     }
 
+    fun onDeleteButtonClick() {
+        if (isFirstEdit) eventTrigger.value = EditActivity.Event.Finish
+        else viewModelScope.launch {
+            launch(Dispatchers.IO) { repository.delete(inputMemo!!) }
+            eventTrigger.value = EditActivity.Event.MemoDeleted(inputMemo!!)
+        }
+    }
+
     private fun createMemoItem(): Memo {
         val currentTimeMillis = System.currentTimeMillis()
         return Memo(

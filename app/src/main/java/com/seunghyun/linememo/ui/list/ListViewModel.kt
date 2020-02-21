@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
 import com.seunghyun.linememo.utils.SingleLiveEvent
+import com.seunghyun.linememo.utils.removeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -45,5 +46,9 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
         memos.removeAt(oldMemoIndex)
         memos.add(oldMemoIndex, newMemo)
         this.memos.value = memos
+    }
+
+    fun onMemoDeleted(deletedMemo: Memo) {
+        memos.removeItem(deletedMemo)
     }
 }
