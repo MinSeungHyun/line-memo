@@ -11,11 +11,20 @@ import kotlinx.coroutines.launch
 
 class EditViewModel(private val repository: MemoRepository, private val inputMemo: Memo? = null) : ViewModel() {
     val eventTrigger = MutableLiveData<EditActivity.Event>()
-    val isEditing = MutableLiveData(true)
+    val isEditing = MutableLiveData(false)
     val title = MutableLiveData("")
     val content = MutableLiveData("")
     val imageItems = MutableLiveData(arrayListOf<ImageItem>())
-    val isFirstEdit = inputMemo != null
+    private val isFirstEdit = inputMemo == null
+
+    init {
+        if (isFirstEdit) isEditing.value = true
+        else {
+            title.value = inputMemo!!.title
+            content.value = inputMemo.content
+            imageItems.value = ArrayList(inputMemo.images)
+        }
+    }
 
     fun onAlbumButtonClick() {
         eventTrigger.value = EditActivity.Event.START_IMAGE_PICKER
@@ -30,18 +39,35 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     fun onSaveButtonClick() {
-        val memo = Memo(
-            System.currentTimeMillis(),
-            title.value?.trim() ?: "",
-            content.value?.trim() ?: "",
-            imageItems.value ?: listOf()
-        )
+        val memo = createMemoItem()
         if (memo.isNotValid()) {
             eventTrigger.value = EditActivity.Event.NOTHING_TO_SAVE
             return
         }
+        saveOrUpdateMemo(memo)
+    }
+
+    fun onEditButtonClick() {
+        isEditing.value = true
+    }
+
+    private fun createMemoItem(): Memo {
+        val currentTimeMillis = System.currentTimeMillis()
+        return Memo(
+            inputMemo?.createdMillis ?: currentTimeMillis,
+            currentTimeMillis,
+            title.value?.trim() ?: "",
+            content.value?.trim() ?: "",
+            imageItems.value ?: listOf()
+        )
+    }
+
+    private fun saveOrUpdateMemo(memo: Memo) {
         viewModelScope.launch {
-            launch(Dispatchers.IO) { repository.insert(memo) }
+            launch(Dispatchers.IO) {
+                if (isFirstEdit) repository.insert(memo)
+                else repository.update(memo)
+            }
             eventTrigger.value = EditActivity.Event.MEMO_SAVED
         }
     }

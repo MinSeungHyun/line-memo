@@ -67,6 +67,10 @@ class EditActivity : AppCompatActivity() {
             viewModel.onSaveButtonClick()
             true
         }
+        R.id.editButton -> {
+            viewModel.onEditButtonClick()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
