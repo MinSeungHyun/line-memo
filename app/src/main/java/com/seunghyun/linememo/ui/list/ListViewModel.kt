@@ -14,6 +14,7 @@ const val KEY_MEMO_ITEM = "memoItem"
 
 class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     val startActivityForResult = SingleLiveEvent<Memo?>()
+    val scrollToTop = SingleLiveEvent<Void>()
     val memos = MutableLiveData(arrayListOf<Memo>())
 
     init {

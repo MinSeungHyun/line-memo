@@ -20,6 +20,7 @@ class MemoRecyclerAdapter(private val viewModel: ListViewModel) : RecyclerView.A
         items.clear()
         items.addAll(newItems)
         result.dispatchUpdatesTo(this)
+        viewModel.scrollToTop.call()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {

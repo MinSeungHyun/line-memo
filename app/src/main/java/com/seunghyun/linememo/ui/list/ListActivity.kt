@@ -53,6 +53,10 @@ class ListActivity : AppCompatActivity() {
                 startActivityForResult(intent, REQUEST_CREATE_MEMO)
             }
         })
+
+        viewModel.scrollToTop.observe(this, Observer {
+            memoRecyclerView.smoothScrollToPosition(0)
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
