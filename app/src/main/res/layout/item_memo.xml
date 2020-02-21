@@ -31,8 +31,8 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/picture"
             android:scaleType="centerCrop"
-            app:calculateDimensionRatio="@{item}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

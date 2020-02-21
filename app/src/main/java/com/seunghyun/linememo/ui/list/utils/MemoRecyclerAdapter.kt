@@ -38,11 +38,18 @@ class MemoRecyclerAdapter(private val viewModel: ListViewModel) : RecyclerView.A
                 item = memo
                 thumbnailImage.setImageDrawable(null)
             }
-            if (memo.images.isNotEmpty()) {
+            loadImage(memo)
+        }
+
+        private fun loadImage(memo: Memo) {
+            val thumbnailImage = binding.thumbnailImage
+            if (memo.images.isEmpty()) {
+                thumbnailImage.setImageResource(R.drawable.ic_subject_gray_24dp)
+            } else {
                 Glide.with(binding.root.context)
                     .load(memo.images[0].path)
                     .centerCrop()
-                    .into(binding.thumbnailImage)
+                    .into(thumbnailImage)
             }
         }
     }

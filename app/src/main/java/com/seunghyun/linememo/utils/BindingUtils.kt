@@ -1,8 +1,6 @@
 package com.seunghyun.linememo.utils
 
 import android.view.View
-import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
@@ -36,15 +34,6 @@ object BindingUtils {
             else -> 0.5f
         }
         guideline.setGuidelinePercent(guidePercent)
-    }
-
-    @BindingAdapter("app:calculateDimensionRatio")
-    @JvmStatic
-    fun calculateDimensionRatio(imageView: ImageView, memo: Memo) {
-        if (memo.images.isEmpty()) return
-        val params = imageView.layoutParams as ConstraintLayout.LayoutParams
-        params.dimensionRatio = "1:1"
-        imageView.layoutParams = params
     }
 
     @BindingConversion
