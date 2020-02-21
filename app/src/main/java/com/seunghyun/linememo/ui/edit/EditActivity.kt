@@ -46,6 +46,7 @@ class EditActivity : AppCompatActivity() {
     }
     private lateinit var imageUri: Uri
     private var addImagePopup: PopupWindow? = null
+    private var menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +60,8 @@ class EditActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.edit_activity_menu, menu)
+        this.menu = menu
+        updateMenuItem()
         return true
     }
 
@@ -96,6 +99,9 @@ class EditActivity : AppCompatActivity() {
                 Event.IMAGE_LOADING_ERROR -> showToast(R.string.image_loading_failed)
                 Event.NOTHING_TO_SAVE -> showToast(R.string.nothing_to_save)
             }
+        })
+        viewModel.isEditing.observe(this, Observer {
+            updateMenuItem()
         })
     }
 
@@ -153,6 +159,20 @@ class EditActivity : AppCompatActivity() {
                 viewModel.imageItems.addItem(ImageItem(imageUri.toString()))
             }
             else -> return super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    private fun updateMenuItem() {
+        menu ?: return
+        val isEditing = viewModel.isEditing.value!!
+        val editButton = menu!!.findItem(R.id.editButton)
+        val saveButton = menu!!.findItem(R.id.saveButton)
+        if (isEditing) {
+            editButton.isVisible = false
+            saveButton.isVisible = true
+        } else {
+            editButton.isVisible = true
+            saveButton.isVisible = false
         }
     }
 

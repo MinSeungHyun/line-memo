@@ -15,7 +15,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     val title = MutableLiveData("")
     val content = MutableLiveData("")
     val imageItems = MutableLiveData(arrayListOf<ImageItem>())
-    private val isFirstEdit = inputMemo == null
+    val isFirstEdit = inputMemo == null
 
     init {
         if (isFirstEdit) isEditing.value = true

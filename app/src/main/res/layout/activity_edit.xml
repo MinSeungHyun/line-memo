@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.seunghyun.linememo.ui.edit.EditViewModel" />
@@ -119,6 +121,7 @@
             android:padding="4dp"
             android:text="@string/add_images"
             android:textColor="?android:attr/textColorPrimary"
+            android:visibility="@{vm.isFirstEdit ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/pictureText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/pictureText" />
