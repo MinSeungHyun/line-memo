@@ -2,6 +2,7 @@ package com.seunghyun.linememo.ui.edit.utils
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -42,18 +43,23 @@ class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView
                 vm = viewModel
                 this.item = item
             }
-            Glide.with(binding.root.context)
-                .load(item.path)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, _1: Any?, _2: Target<Drawable>?, _3: Boolean): Boolean {
-                        e?.printStackTrace()
-                        viewModel.onImageLoadingError(item)
-                        return true
-                    }
-
-                    override fun onResourceReady(_1: Drawable?, _2: Any?, _3: Target<Drawable>?, _4: DataSource?, _5: Boolean) = false
-                })
-                .into(binding.imageView)
+            loadImage(item)
         }
+
+        private fun loadImage(item: ImageItem) = Glide.with(binding.root.context)
+            .load(item.path)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(e: GlideException?, _1: Any?, _2: Target<Drawable>?, _3: Boolean): Boolean {
+                    e?.printStackTrace()
+                    viewModel.onImageLoadingError(item)
+                    return true
+                }
+
+                override fun onResourceReady(_1: Drawable?, _2: Any?, _3: Target<Drawable>?, _4: DataSource?, _5: Boolean): Boolean {
+                    binding.progressBar.visibility = View.GONE
+                    return false
+                }
+            })
+            .into(binding.imageView)
     }
 }
