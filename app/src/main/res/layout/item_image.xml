@@ -2,6 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.seunghyun.linememo.ui.edit.EditViewModel" />
+
+        <variable
+            name="item"
+            type="com.seunghyun.linememo.ui.edit.ImageItem" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -16,5 +29,19 @@
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/delete"
+            android:onClick="@{() -> vm.onDeleteImageButtonClick(item)}"
+            android:padding="4dp"
+            android:src="@drawable/ic_remove_circle_red_24dp"
+            android:visibility="@{vm.isFirstEdit ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

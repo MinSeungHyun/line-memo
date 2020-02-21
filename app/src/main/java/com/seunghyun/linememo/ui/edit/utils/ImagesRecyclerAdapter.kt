@@ -38,6 +38,10 @@ class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView
 
     inner class ImageViewHolder(private val binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ImageItem) {
+            binding.apply {
+                vm = viewModel
+                this.item = item
+            }
             Glide.with(binding.root.context)
                 .load(item.path)
                 .listener(object : RequestListener<Drawable> {

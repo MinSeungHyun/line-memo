@@ -81,7 +81,11 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     fun onImageLoadingError(item: ImageItem) {
-        imageItems.removeItem(item)
+        if (isFirstEdit) imageItems.removeItem(item)
         eventTrigger.value = EditActivity.Event.ImageLoadingError
+    }
+
+    fun onDeleteImageButtonClick(item: ImageItem) {
+        imageItems.removeItem(item)
     }
 }
