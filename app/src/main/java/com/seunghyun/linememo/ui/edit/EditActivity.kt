@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -86,6 +87,8 @@ class EditActivity : AppCompatActivity() {
         addImageButton.setOnClickListener {
             showAddImagePopup()
         }
+
+        contentText.movementMethod = ScrollingMovementMethod()
 
         viewModel.eventTrigger.observe(this, Observer {
             when (it!!) {
