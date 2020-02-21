@@ -16,15 +16,18 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     val startActivityForResult = SingleLiveEvent<Memo?>()
     val scrollToTop = SingleLiveEvent<Void>()
     val memos = MutableLiveData(arrayListOf<Memo>())
+    val refreshing = MutableLiveData(false)
     private var newMemoInserted = false
 
     init {
         updateAllMemos()
     }
 
-    private fun updateAllMemos() = viewModelScope.launch(Dispatchers.Main) {
+    fun updateAllMemos() = viewModelScope.launch(Dispatchers.Main) {
+        refreshing.postValue(true)
         val memoList = ArrayList(repository.getAllMemos().reversed())
         memos.postValue(memoList)
+        refreshing.postValue(false)
     }
 
     fun onAddButtonClick() {

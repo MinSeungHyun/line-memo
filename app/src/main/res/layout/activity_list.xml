@@ -10,28 +10,36 @@
             type="com.seunghyun.linememo.ui.list.ListViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:onRefreshListener="@{() -> vm.updateAllMemos()}"
+        app:refreshing="@{vm.refreshing}">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:onClick="@{() -> vm.onAddButtonClick()}"
-            android:src="@drawable/ic_add_black_24dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/memoRecyclerView"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingTop="@dimen/space_between_memos"
-            android:paddingBottom="@dimen/space_between_memos"
-            app:items="@{vm.memos}"
-            tools:listitem="@layout/item_memo" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_height="match_parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:onClick="@{() -> vm.onAddButtonClick()}"
+                android:src="@drawable/ic_add_black_24dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/memoRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="@dimen/space_between_memos"
+                android:paddingBottom="@dimen/space_between_memos"
+                app:items="@{vm.memos}"
+                tools:listitem="@layout/item_memo" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
