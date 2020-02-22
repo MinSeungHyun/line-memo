@@ -12,6 +12,6 @@ class MemoItemDiffCallback(private val oldList: ArrayList<Memo>, private val new
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].createdMillis == newList[newItemPosition].createdMillis
+        return oldList[oldItemPosition].contentEquals(newList[newItemPosition])
     }
 }
