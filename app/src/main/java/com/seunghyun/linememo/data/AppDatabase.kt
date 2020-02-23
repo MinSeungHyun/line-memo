@@ -11,7 +11,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun memoDao(): MemoDao
 
     companion object {
-        private const val DB_NAME = "linememo-db"
+        const val DB_NAME = "linememo-db"
         private var instance: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase {
