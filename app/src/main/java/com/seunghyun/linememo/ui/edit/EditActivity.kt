@@ -35,6 +35,7 @@ import com.seunghyun.linememo.utils.copyImageToStorage
 import com.seunghyun.linememo.utils.getImagePathForCurrent
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.dialog_add_link.*
+import java.io.File
 
 private const val REQUEST_IMAGE_PICKER = 0
 private const val REQUEST_CAMERA = 1
@@ -105,6 +106,7 @@ class EditActivity : AppCompatActivity() {
                 Event.Finish -> finish()
                 is Event.MemoSaved -> onMemoSaved((it as Event.MemoSaved).memo)
                 is Event.MemoDeleted -> onMemoDeleted((it as Event.MemoDeleted).memo)
+                is Event.DeleteLocalImageFile -> deleteLocalImageFile((it as Event.DeleteLocalImageFile).images)
             }
         })
         viewModel.isEditing.observe(this, Observer {
@@ -199,6 +201,15 @@ class EditActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun deleteLocalImageFile(images: List<ImageItem>) {
+        for (item in images) {
+            if (item.path.startsWith("http")) continue
+            val fileName = item.path.split("/").last()
+            val file = File("${filesDir.path}/$fileName")
+            if (file.exists()) file.delete()
+        }
+    }
+
     private fun showToast(@StringRes stringId: Int) {
         Toast.makeText(this, stringId, Toast.LENGTH_LONG).show()
     }
@@ -217,5 +228,6 @@ class EditActivity : AppCompatActivity() {
         object Finish : Event()
         class MemoSaved(val memo: Memo) : Event()
         class MemoDeleted(val memo: Memo) : Event()
+        class DeleteLocalImageFile(val images: List<ImageItem>) : Event()
     }
 }

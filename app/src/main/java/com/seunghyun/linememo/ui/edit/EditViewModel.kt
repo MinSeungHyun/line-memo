@@ -9,7 +9,6 @@ import com.seunghyun.linememo.utils.SingleLiveEvent
 import com.seunghyun.linememo.utils.removeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 
 class EditViewModel(private val repository: MemoRepository, private val inputMemo: Memo? = null) : ViewModel() {
     val eventTrigger = SingleLiveEvent<EditActivity.Event>()
@@ -58,7 +57,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
         else viewModelScope.launch {
             launch(Dispatchers.IO) {
                 repository.delete(inputMemo!!)
-                deleteLocalImageFile(inputMemo.images)
+                eventTrigger.value = EditActivity.Event.DeleteLocalImageFile(inputMemo.images)
             }
             eventTrigger.value = EditActivity.Event.MemoDeleted(inputMemo!!)
         }
@@ -92,13 +91,6 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
 
     fun onDeleteImageButtonClick(item: ImageItem) {
         imageItems.removeItem(item)
-        deleteLocalImageFile(listOf(item))
-    }
-
-    private fun deleteLocalImageFile(images: List<ImageItem>) {
-        images.forEach {
-            val file = File(it.path)
-            if (file.exists()) file.delete()
-        }
+        eventTrigger.value = EditActivity.Event.DeleteLocalImageFile(listOf(item))
     }
 }
