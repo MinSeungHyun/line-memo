@@ -222,6 +222,21 @@ class EditActivity : AppCompatActivity() {
         addImagePopup?.dismiss()
     }
 
+    override fun finish() {
+        if (!viewModel.hasChanges) return super.finish()
+        AlertDialog.Builder(this)
+            .setTitle(R.string.save_question)
+            .setPositiveButton(R.string.save) { _, _ ->
+                val canSave = viewModel.onSaveButtonClick()
+                if (canSave) super.finish()
+            }
+            .setNegativeButton(R.string.dont_save) { _, _ ->
+                super.finish()
+            }
+            .setNeutralButton(R.string.cancel, null)
+            .show()
+    }
+
     sealed class Event {
         object StartImagePicker : Event()
         object StartCamera : Event()

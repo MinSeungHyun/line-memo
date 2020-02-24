@@ -23,6 +23,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     val title = MutableLiveData("")
     val content = MutableLiveData("")
 
+    var hasChanges = false
     private val isFirstEdit = inputMemo == null
 
     init {
@@ -32,6 +33,8 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
             content.value = inputMemo.content
             _imageItems.value = ArrayList(inputMemo.images)
         }
+
+        startObservingChanges()
     }
 
     fun onAlbumButtonClick() {
@@ -50,13 +53,17 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
         _imageItems.addItem(ImageItem(path))
     }
 
-    fun onSaveButtonClick() {
+    /**
+     * @return true if the memo can be saved
+     */
+    fun onSaveButtonClick(): Boolean {
         val memo = createMemoItem()
         if (memo.isNotValid()) {
             _eventTrigger.value = EditActivity.Event.InvalidMemo
-            return
+            return false
         }
         saveOrUpdateMemo(memo)
+        return true
     }
 
     fun onEditButtonClick() {
@@ -91,6 +98,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
                 if (isFirstEdit) repository.insert(memo)
                 else repository.update(memo)
             }
+            hasChanges = false
             _eventTrigger.value = EditActivity.Event.MemoSaved(memo)
         }
     }
@@ -103,5 +111,32 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     fun onDeleteImageButtonClick(item: ImageItem) {
         _imageItems.removeItem(item)
         _eventTrigger.value = EditActivity.Event.DeleteLocalImageFile(listOf(item))
+    }
+
+    private fun startObservingChanges() {
+        var isTitleObservedFirst = true
+        title.observeForever {
+            if (isTitleObservedFirst) {
+                isTitleObservedFirst = false
+                return@observeForever
+            }
+            if (isEditing.value!!) hasChanges = true
+        }
+        var isContentObservedFirst = true
+        content.observeForever {
+            if (isContentObservedFirst) {
+                isContentObservedFirst = false
+                return@observeForever
+            }
+            if (isEditing.value!!) hasChanges = true
+        }
+        var isImagesObservedFirst = true
+        imageItems.observeForever {
+            if (isImagesObservedFirst) {
+                isImagesObservedFirst = false
+                return@observeForever
+            }
+            if (isEditing.value!!) hasChanges = true
+        }
     }
 }
