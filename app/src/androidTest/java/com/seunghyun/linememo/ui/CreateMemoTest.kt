@@ -53,14 +53,7 @@ class CreateMemoTest {
                 isDisplayed()))
         appCompatEditText2.perform(replaceText(CONTENT), closeSoftKeyboard())
 
-        val actionMenuItemView = onView(
-            allOf(withId(R.id.saveButton), withContentDescription(R.string.save),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.action_bar),
-                        1),
-                    0),
-                isDisplayed()))
+        val actionMenuItemView = onView(withId(R.id.saveButton))
         actionMenuItemView.perform(click())
 
         val view = onView(

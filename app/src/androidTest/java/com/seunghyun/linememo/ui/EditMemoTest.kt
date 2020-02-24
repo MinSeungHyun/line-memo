@@ -85,14 +85,7 @@ class EditMemoTest {
         val appCompatButton = onView(withText(R.string.ok))
         appCompatButton.perform(click())
 
-        val actionMenuItemView = onView(
-            allOf(withId(R.id.saveButton), withContentDescription(R.string.save),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.action_bar),
-                        1),
-                    0),
-                isDisplayed()))
+        val actionMenuItemView = onView(withId(R.id.saveButton))
         actionMenuItemView.perform(click())
 
         val view = onView(
@@ -120,14 +113,7 @@ class EditMemoTest {
                 isDisplayed()))
         imageView.check(matches(isDisplayed()))
 
-        val actionMenuItemView2 = onView(
-            allOf(withId(R.id.editButton), withContentDescription(R.string.edit),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.action_bar),
-                        1),
-                    0),
-                isDisplayed()))
+        val actionMenuItemView2 = onView(withId(R.id.editButton))
         actionMenuItemView2.perform(click())
 
         val appCompatEditText5 = onView(
@@ -184,14 +170,7 @@ class EditMemoTest {
                 isDisplayed()))
         appCompatImageView.perform(click())
 
-        val actionMenuItemView3 = onView(
-            allOf(withId(R.id.saveButton), withContentDescription(R.string.save),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.action_bar),
-                        1),
-                    0),
-                isDisplayed()))
+        val actionMenuItemView3 = onView(withId(R.id.saveButton))
         actionMenuItemView3.perform(click())
 
         Thread.sleep(500)

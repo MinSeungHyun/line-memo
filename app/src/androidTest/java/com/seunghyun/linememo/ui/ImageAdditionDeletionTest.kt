@@ -108,14 +108,7 @@ class ImageAdditionDeletionTest {
         val appCompatButton2 = onView(withId(android.R.id.button1))
         appCompatButton2.perform(click())
 
-        val actionMenuItemView = onView(
-            allOf(withId(R.id.saveButton), withContentDescription(R.string.save),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.action_bar),
-                        1),
-                    0),
-                isDisplayed()))
+        val actionMenuItemView = onView(withId(R.id.saveButton))
         actionMenuItemView.perform(click())
 
         val view = onView(
@@ -136,10 +129,5 @@ class ImageAdditionDeletionTest {
                     0),
                 isDisplayed()))
         imageView.check(matches(isDisplayed()))
-    }
-
-    @After
-    fun finish() {
-        mActivityTestRule.finishActivity()
     }
 }

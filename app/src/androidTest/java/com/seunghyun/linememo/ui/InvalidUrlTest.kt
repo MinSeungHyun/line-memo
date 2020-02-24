@@ -12,6 +12,7 @@ import com.seunghyun.linememo.R
 import com.seunghyun.linememo.ui.list.ListActivity
 import com.seunghyun.linememo.utils.childAtPosition
 import org.hamcrest.Matchers.allOf
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
