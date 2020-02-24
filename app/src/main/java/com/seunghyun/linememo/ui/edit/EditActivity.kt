@@ -30,7 +30,6 @@ import com.seunghyun.linememo.ui.edit.utils.EditViewModelFactory
 import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
 import com.seunghyun.linememo.ui.list.KEY_MEMO_ITEM
 import com.seunghyun.linememo.ui.list.RESULT_DELETED
-import com.seunghyun.linememo.utils.addItem
 import com.seunghyun.linememo.utils.copyImageToStorage
 import com.seunghyun.linememo.utils.getImagePathForCurrent
 import kotlinx.android.synthetic.main.activity_edit.*
@@ -149,7 +148,7 @@ class EditActivity : AppCompatActivity() {
         .setNegativeButton(R.string.cancel, null)
         .setPositiveButton(R.string.ok) { dialog, _ ->
             val editText = (dialog as Dialog).linkEditText
-            viewModel.imageItems.addItem(ImageItem(editText.text.toString()))
+            viewModel.addNewImage(editText.text.toString())
         }
         .show()
 
@@ -164,10 +163,10 @@ class EditActivity : AppCompatActivity() {
                     return super.onActivityResult(requestCode, resultCode, data)
                 }
                 val copiedUri = copyImageToStorage(uri)
-                viewModel.imageItems.addItem(ImageItem(copiedUri.path!!))
+                viewModel.addNewImage(copiedUri.path!!)
             }
             REQUEST_CAMERA -> {
-                viewModel.imageItems.addItem(ImageItem(imageUri.toString()))
+                viewModel.addNewImage(imageUri.toString())
             }
             else -> return super.onActivityResult(requestCode, resultCode, data)
         }

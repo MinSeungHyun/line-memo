@@ -1,5 +1,6 @@
 package com.seunghyun.linememo.ui.list
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,10 +14,16 @@ import kotlinx.coroutines.launch
 const val KEY_MEMO_ITEM = "memoItem"
 
 class ListViewModel(private val repository: MemoRepository) : ViewModel() {
-    val startActivityForResult = SingleLiveEvent<Memo?>()
-    val scrollToTop = SingleLiveEvent<Void>()
-    val memos = MutableLiveData(arrayListOf<Memo>())
-    val refreshing = MutableLiveData(false)
+    private val _startActivityForResult = SingleLiveEvent<Memo?>()
+    private val _scrollToTop = SingleLiveEvent<Void>()
+    private val _memos = MutableLiveData(arrayListOf<Memo>())
+    private val _refreshing = MutableLiveData(false)
+
+    val startActivityForResult: LiveData<Memo?> = _startActivityForResult
+    val scrollToTop: LiveData<Void> = _scrollToTop
+    val memos: LiveData<ArrayList<Memo>> = _memos
+    val refreshing: LiveData<Boolean> = _refreshing
+
     private var newMemoInserted = false
 
     init {
@@ -24,25 +31,25 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     }
 
     fun updateAllMemos() = viewModelScope.launch(Dispatchers.Main) {
-        refreshing.postValue(true)
+        _refreshing.postValue(true)
         val memoList = ArrayList(repository.getAllMemos().reversed())
-        memos.postValue(memoList)
-        refreshing.postValue(false)
+        _memos.postValue(memoList)
+        _refreshing.postValue(false)
     }
 
     fun onAddButtonClick() {
-        startActivityForResult.value = null
+        _startActivityForResult.value = null
     }
 
     fun onMemoItemClick(memo: Memo) {
-        startActivityForResult.value = memo
+        _startActivityForResult.value = memo
     }
 
     fun onMemoCreated(memo: Memo) {
         newMemoInserted = true
         val memos = memos.value ?: return
         memos.add(0, memo)
-        this.memos.value = memos
+        _memos.value = memos
     }
 
     fun onMemoEdited(newMemo: Memo) {
@@ -51,16 +58,16 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
         val oldMemoIndex = memos.indexOf(oldMemo)
         memos.removeAt(oldMemoIndex)
         memos.add(oldMemoIndex, newMemo)
-        this.memos.value = memos
+        _memos.value = memos
     }
 
     fun onMemoDeleted(deletedMemo: Memo) {
-        memos.removeItem(deletedMemo)
+        _memos.removeItem(deletedMemo)
     }
 
     fun onRecyclerViewUpdated() {
         if (newMemoInserted) {
-            scrollToTop.call()
+            _scrollToTop.call()
             newMemoInserted = false
         }
     }
