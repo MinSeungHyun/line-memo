@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LineMemo</string>
+    <string name="app_name">라인 메모</string>
 
     <string name="write_memo">메모 작성하기</string>
     <string name="add_images">사진 추가하기</string>
