@@ -1,4 +1,4 @@
-package com.seunghyun.linememo.ui.list
+package com.seunghyun.linememo.ui
 
 
 import androidx.test.espresso.Espresso.onView
@@ -9,6 +9,7 @@ import androidx.test.filters.LargeTest
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.rule.ActivityTestRule
 import com.seunghyun.linememo.R
+import com.seunghyun.linememo.ui.list.ListActivity
 import com.seunghyun.linememo.utils.childAtPosition
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule
