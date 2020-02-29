@@ -4,7 +4,9 @@ package com.seunghyun.linememo.utils
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  */
 open class Event<out T>(private val content: T) {
-    private var hasBeenHandled = false
+    var hasBeenHandled = false
+        private set
+    val isContentNull = content == null
 
     fun getContentIfNotHandled(): T? {
         return if (hasBeenHandled) {
