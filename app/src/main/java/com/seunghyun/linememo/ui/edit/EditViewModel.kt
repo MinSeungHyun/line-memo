@@ -6,18 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
-import com.seunghyun.linememo.utils.SingleLiveEvent
+import com.seunghyun.linememo.utils.Event
 import com.seunghyun.linememo.utils.addItem
 import com.seunghyun.linememo.utils.removeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditViewModel(private val repository: MemoRepository, private val inputMemo: Memo? = null) : ViewModel() {
-    private val _eventTrigger = SingleLiveEvent<EditActivity.Event>()
+    private val _eventTrigger = MutableLiveData<Event<EditActivity.Event>>()
     private val _isEditing = MutableLiveData(false)
     private val _imageItems = MutableLiveData(arrayListOf<ImageItem>())
 
-    val eventTrigger: LiveData<EditActivity.Event> = _eventTrigger
+    val eventTrigger: LiveData<Event<EditActivity.Event>> = _eventTrigger
     val isEditing: LiveData<Boolean> = _isEditing
     val imageItems: LiveData<ArrayList<ImageItem>> = _imageItems
     val title = MutableLiveData("")
@@ -38,15 +38,15 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     fun onAlbumButtonClick() {
-        _eventTrigger.value = EditActivity.Event.StartImagePicker
+        _eventTrigger.value = Event(EditActivity.Event.StartImagePicker)
     }
 
     fun onCameraButtonClick() {
-        _eventTrigger.value = EditActivity.Event.StartCamera
+        _eventTrigger.value = Event(EditActivity.Event.StartCamera)
     }
 
     fun onLinkButtonClick() {
-        _eventTrigger.value = EditActivity.Event.AddLink
+        _eventTrigger.value = Event(EditActivity.Event.AddLink)
     }
 
     fun addNewImage(path: String) {
@@ -59,7 +59,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     fun onSaveButtonClick(): Boolean {
         val memo = createMemoItem()
         if (memo.isNotValid()) {
-            _eventTrigger.value = EditActivity.Event.InvalidMemo
+            _eventTrigger.value = Event(EditActivity.Event.InvalidMemo)
             return false
         }
         saveOrUpdateMemo(memo)
@@ -71,13 +71,13 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     fun onDeleteButtonClick() {
-        if (isFirstEdit) _eventTrigger.value = EditActivity.Event.Finish
+        if (isFirstEdit) _eventTrigger.value = Event(EditActivity.Event.Finish)
         else viewModelScope.launch {
             launch(Dispatchers.IO) {
                 repository.delete(inputMemo!!)
-                _eventTrigger.postValue(EditActivity.Event.DeleteLocalImageFile(inputMemo.images))
+                _eventTrigger.postValue(Event(EditActivity.Event.DeleteLocalImageFile(inputMemo.images)))
             }
-            _eventTrigger.value = EditActivity.Event.MemoDeleted(inputMemo!!)
+            _eventTrigger.value = Event(EditActivity.Event.MemoDeleted(inputMemo!!))
         }
     }
 
@@ -99,18 +99,18 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
                 else repository.update(memo)
             }
             hasChanges = false
-            _eventTrigger.value = EditActivity.Event.MemoSaved(memo)
+            _eventTrigger.value = Event(EditActivity.Event.MemoSaved(memo))
         }
     }
 
     fun onImageLoadingError(item: ImageItem) {
         if (isFirstEdit) _imageItems.removeItem(item)
-        _eventTrigger.value = EditActivity.Event.ImageLoadingError
+        _eventTrigger.value = Event(EditActivity.Event.ImageLoadingError)
     }
 
     fun onDeleteImageButtonClick(item: ImageItem) {
         _imageItems.removeItem(item)
-        _eventTrigger.value = EditActivity.Event.DeleteLocalImageFile(listOf(item))
+        _eventTrigger.value = Event(EditActivity.Event.DeleteLocalImageFile(listOf(item)))
     }
 
     private fun startObservingChanges() {

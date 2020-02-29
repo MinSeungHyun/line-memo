@@ -30,6 +30,7 @@ import com.seunghyun.linememo.ui.edit.utils.EditViewModelFactory
 import com.seunghyun.linememo.ui.edit.utils.ImagesRecyclerAdapter
 import com.seunghyun.linememo.ui.list.KEY_MEMO_ITEM
 import com.seunghyun.linememo.ui.list.RESULT_DELETED
+import com.seunghyun.linememo.utils.EventObserver
 import com.seunghyun.linememo.utils.copyImageToStorage
 import com.seunghyun.linememo.utils.getImagePathForCurrent
 import kotlinx.android.synthetic.main.activity_edit.*
@@ -99,17 +100,17 @@ class EditActivity : AppCompatActivity() {
 
         contentText.movementMethod = ScrollingMovementMethod()
 
-        viewModel.eventTrigger.observe(this, Observer {
-            when (it!!) {
+        viewModel.eventTrigger.observe(this, EventObserver {
+            when (it) {
                 Event.StartImagePicker -> startImagePicker()
                 Event.StartCamera -> startCamera()
                 Event.AddLink -> startAddLinkDialog()
                 Event.ImageLoadingError -> showToast(R.string.image_loading_failed)
                 Event.InvalidMemo -> showToast(R.string.enter_title)
                 Event.Finish -> finish()
-                is Event.MemoSaved -> onMemoSaved((it as Event.MemoSaved).memo)
-                is Event.MemoDeleted -> onMemoDeleted((it as Event.MemoDeleted).memo)
-                is Event.DeleteLocalImageFile -> deleteLocalImageFile((it as Event.DeleteLocalImageFile).images)
+                is Event.MemoSaved -> onMemoSaved(it.memo)
+                is Event.MemoDeleted -> onMemoDeleted(it.memo)
+                is Event.DeleteLocalImageFile -> deleteLocalImageFile(it.images)
             }
         })
         viewModel.isEditing.observe(this, Observer {
