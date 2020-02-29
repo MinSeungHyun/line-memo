@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
-import com.seunghyun.linememo.utils.SingleLiveEvent
+import com.seunghyun.linememo.utils.Event
 import com.seunghyun.linememo.utils.removeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,13 +14,13 @@ import kotlinx.coroutines.launch
 const val KEY_MEMO_ITEM = "memoItem"
 
 class ListViewModel(private val repository: MemoRepository) : ViewModel() {
-    private val _startActivityForResult = SingleLiveEvent<Memo?>()
-    private val _scrollToTop = SingleLiveEvent<Void>()
+    private val _startActivityForResult = MutableLiveData<Event<Memo?>>()
+    private val _scrollToTop = MutableLiveData<Event<Void?>>()
     private val _memos = MutableLiveData(arrayListOf<Memo>())
     private val _refreshing = MutableLiveData(false)
 
-    val startActivityForResult: LiveData<Memo?> = _startActivityForResult
-    val scrollToTop: LiveData<Void> = _scrollToTop
+    val startActivityForResult: LiveData<Event<Memo?>> = _startActivityForResult
+    val scrollToTop: LiveData<Event<Void?>> = _scrollToTop
     val memos: LiveData<ArrayList<Memo>> = _memos
     val refreshing: LiveData<Boolean> = _refreshing
 
@@ -38,11 +38,11 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
     }
 
     fun onAddButtonClick() {
-        _startActivityForResult.value = null
+        _startActivityForResult.value = Event(null)
     }
 
     fun onMemoItemClick(memo: Memo) {
-        _startActivityForResult.value = memo
+        _startActivityForResult.value = Event(memo)
     }
 
     fun onMemoCreated(memo: Memo) {
@@ -67,7 +67,7 @@ class ListViewModel(private val repository: MemoRepository) : ViewModel() {
 
     fun onRecyclerViewUpdated() {
         if (newMemoInserted) {
-            _scrollToTop.call()
+            _scrollToTop.value = Event(null)
             newMemoInserted = false
         }
     }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seunghyun.linememo.R
@@ -16,6 +15,7 @@ import com.seunghyun.linememo.databinding.ActivityListBinding
 import com.seunghyun.linememo.ui.edit.EditActivity
 import com.seunghyun.linememo.ui.list.utils.ListViewModelFactory
 import com.seunghyun.linememo.ui.list.utils.MemoRecyclerAdapter
+import com.seunghyun.linememo.utils.EventObserver
 import kotlinx.android.synthetic.main.activity_list.*
 
 const val REQUEST_CREATE_MEMO = 0
@@ -44,7 +44,7 @@ class ListActivity : AppCompatActivity() {
             adapter = MemoRecyclerAdapter(viewModel)
         }
 
-        viewModel.startActivityForResult.observe(this, Observer { editingMemo ->
+        viewModel.startActivityForResult.observe(this, EventObserver { editingMemo ->
             val intent = Intent(this, EditActivity::class.java)
             if (editingMemo != null) {
                 intent.putExtra(KEY_MEMO_ITEM, editingMemo)
@@ -54,7 +54,7 @@ class ListActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.scrollToTop.observe(this, Observer {
+        viewModel.scrollToTop.observe(this, EventObserver {
             memoRecyclerView.smoothScrollToPosition(0)
         })
     }
