@@ -13,12 +13,11 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.data.AppDatabase
@@ -41,11 +40,10 @@ private const val REQUEST_IMAGE_PICKER = 0
 private const val REQUEST_CAMERA = 1
 
 class EditActivity : AppCompatActivity() {
-    private val viewModel by lazy {
+    private val viewModel: EditViewModel by viewModels {
         val dao = AppDatabase.getInstance(this).memoDao()
-        val repository = MemoRepository(dao)
         val inputMemo = intent.getSerializableExtra(KEY_MEMO_ITEM) as Memo?
-        ViewModelProvider(this, EditViewModelFactory(repository, inputMemo)).get(EditViewModel::class.java)
+        EditViewModelFactory(MemoRepository(dao), inputMemo)
     }
     private lateinit var imageUri: Uri
     private var addImagePopup: PopupWindow? = null

@@ -3,9 +3,9 @@ package com.seunghyun.linememo.ui.list
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seunghyun.linememo.R
 import com.seunghyun.linememo.data.AppDatabase
@@ -23,10 +23,9 @@ const val REQUEST_EDIT_MEMO = 1
 const val RESULT_DELETED = 5
 
 class ListActivity : AppCompatActivity() {
-    private val viewModel by lazy {
+    private val viewModel: ListViewModel by viewModels {
         val dao = AppDatabase.getInstance(this).memoDao()
-        val repository = MemoRepository(dao)
-        ViewModelProvider(this, ListViewModelFactory(repository)).get(ListViewModel::class.java)
+        ListViewModelFactory(MemoRepository(dao))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
