@@ -17,7 +17,9 @@ import com.seunghyun.linememo.databinding.ItemImageBinding
 import com.seunghyun.linememo.ui.edit.EditViewModel
 import com.seunghyun.linememo.ui.edit.ImageItem
 
-class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView.Adapter<ImagesRecyclerAdapter.ImageViewHolder>() {
+class ImagesRecyclerAdapter(private val viewModel: EditViewModel) :
+    RecyclerView.Adapter<ImagesRecyclerAdapter.ImageViewHolder>() {
+
     private val items = arrayListOf<ImageItem>()
 
     fun updateItems(newItems: ArrayList<ImageItem>) {
@@ -55,7 +57,13 @@ class ImagesRecyclerAdapter(private val viewModel: EditViewModel) : RecyclerView
                     return true
                 }
 
-                override fun onResourceReady(_1: Drawable?, _2: Any?, _3: Target<Drawable>?, _4: DataSource?, _5: Boolean): Boolean {
+                override fun onResourceReady(
+                    _1: Drawable?,
+                    _2: Any?,
+                    _3: Target<Drawable>?,
+                    _4: DataSource?,
+                    _5: Boolean
+                ): Boolean {
                     binding.progressBar.visibility = View.GONE
                     return false
                 }

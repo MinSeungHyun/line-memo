@@ -3,7 +3,9 @@ package com.seunghyun.linememo.ui.edit.utils
 import androidx.recyclerview.widget.DiffUtil
 import com.seunghyun.linememo.ui.edit.ImageItem
 
-class ImageItemDiffCallback(private val oldList: ArrayList<ImageItem>, private val newList: ArrayList<ImageItem>) : DiffUtil.Callback() {
+class ImageItemDiffCallback(private val oldList: ArrayList<ImageItem>, private val newList: ArrayList<ImageItem>) :
+    DiffUtil.Callback() {
+
     override fun getOldListSize() = oldList.size
     override fun getNewListSize() = newList.size
 

@@ -111,7 +111,7 @@ class EditActivity : AppCompatActivity() {
                 is Event.DeleteLocalImageFile -> deleteLocalImageFile(it.images)
             }
         })
-        viewModel.isEditing.observe(this, Observer {
+        viewModel.isEditing.observe(this, {
             updateMenuItem()
             //item_image.xml 에는 lifecycleOwner 가 없기 때문에 이미지 삭제 버튼 업데이트를 위해 다시 binding 해야한다.
             imagesRecyclerView.adapter?.notifyDataSetChanged()
@@ -119,8 +119,10 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun showAddImagePopup() {
-        val binding = DataBindingUtil.inflate<PopupAddNewImageBinding>(layoutInflater,
-            R.layout.popup_add_new_image, rootView, false)
+        val binding = DataBindingUtil.inflate<PopupAddNewImageBinding>(
+            layoutInflater,
+            R.layout.popup_add_new_image, rootView, false
+        )
         binding.vm = viewModel
         addImagePopup = PopupWindow(binding.root, addImageButton.width, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             elevation = 8f

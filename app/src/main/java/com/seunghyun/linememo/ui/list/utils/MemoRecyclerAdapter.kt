@@ -11,7 +11,9 @@ import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.databinding.ItemMemoBinding
 import com.seunghyun.linememo.ui.list.ListViewModel
 
-class MemoRecyclerAdapter(private val viewModel: ListViewModel) : RecyclerView.Adapter<MemoRecyclerAdapter.MemoViewHolder>() {
+class MemoRecyclerAdapter(private val viewModel: ListViewModel) :
+    RecyclerView.Adapter<MemoRecyclerAdapter.MemoViewHolder>() {
+
     private val items = arrayListOf<Memo>()
 
     fun updateItems(newItems: ArrayList<Memo>) {
@@ -30,7 +32,8 @@ class MemoRecyclerAdapter(private val viewModel: ListViewModel) : RecyclerView.A
     }
 
     override fun getItemCount() = viewModel.memos.value?.size ?: 0
-    override fun onBindViewHolder(holder: MemoViewHolder, position: Int) = holder.bind(viewModel.memos.value!![position])
+    override fun onBindViewHolder(holder: MemoViewHolder, position: Int) =
+        holder.bind(viewModel.memos.value!![position])
 
     inner class MemoViewHolder(private val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memo: Memo) {

@@ -26,9 +26,9 @@ data class Memo(
 
     fun contentEquals(other: Memo): Boolean {
         return createdMillis == other.createdMillis
-            && lastEditMillis == other.lastEditMillis
-            && title == other.title
-            && content == other.content
-            && images.toTypedArray().contentDeepEquals(other.images.toTypedArray())
+                && lastEditMillis == other.lastEditMillis
+                && title == other.title
+                && content == other.content
+                && images.toTypedArray().contentDeepEquals(other.images.toTypedArray())
     }
 }
