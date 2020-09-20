@@ -32,8 +32,9 @@ class MemoRecyclerAdapter(private val viewModel: ListViewModel) :
     }
 
     override fun getItemCount() = viewModel.memos.value?.size ?: 0
+
     override fun onBindViewHolder(holder: MemoViewHolder, position: Int) =
-        holder.bind(viewModel.memos.value!![position])
+        holder.bind(viewModel.memos.value?.get(position) ?: throw RuntimeException())
 
     inner class MemoViewHolder(private val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(memo: Memo) {

@@ -20,16 +20,16 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     val eventTrigger: LiveData<Event<EditActivity.Event>> = _eventTrigger
     val isEditing: LiveData<Boolean> = _isEditing
     val imageItems: LiveData<ArrayList<ImageItem>> = _imageItems
+
     val title = MutableLiveData("")
     val content = MutableLiveData("")
 
     var hasChanges = false
-    private val isFirstEdit = inputMemo == null
 
     init {
-        if (isFirstEdit) _isEditing.value = true
+        if (inputMemo == null) _isEditing.value = true
         else {
-            title.value = inputMemo!!.title
+            title.value = inputMemo.title
             content.value = inputMemo.content
             _imageItems.value = ArrayList(inputMemo.images)
         }
@@ -71,13 +71,13 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     fun onDeleteButtonClick() {
-        if (isFirstEdit) _eventTrigger.value = Event(EditActivity.Event.Finish)
+        if (inputMemo == null) _eventTrigger.value = Event(EditActivity.Event.Finish)
         else viewModelScope.launch {
             launch(Dispatchers.IO) {
-                repository.delete(inputMemo!!)
+                repository.delete(inputMemo)
                 _eventTrigger.postValue(Event(EditActivity.Event.DeleteLocalImageFile(inputMemo.images)))
             }
-            _eventTrigger.value = Event(EditActivity.Event.MemoDeleted(inputMemo!!))
+            _eventTrigger.value = Event(EditActivity.Event.MemoDeleted(inputMemo))
         }
     }
 
@@ -95,7 +95,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     private fun saveOrUpdateMemo(memo: Memo) {
         viewModelScope.launch {
             launch(Dispatchers.IO) {
-                if (isFirstEdit) repository.insert(memo)
+                if (inputMemo == null) repository.insert(memo)
                 else repository.update(memo)
             }
             hasChanges = false
@@ -104,7 +104,7 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     fun onImageLoadingError(item: ImageItem) {
-        if (isFirstEdit) _imageItems.removeItem(item)
+        if (inputMemo == null) _imageItems.removeItem(item)
         _eventTrigger.value = Event(EditActivity.Event.ImageLoadingError)
     }
 

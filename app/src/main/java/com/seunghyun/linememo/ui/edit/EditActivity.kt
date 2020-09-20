@@ -47,7 +47,7 @@ class EditActivity : AppCompatActivity() {
     }
     private lateinit var imageUri: Uri
     private var addImagePopup: PopupWindow? = null
-    private var menu: Menu? = null
+    private lateinit var menu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,7 +168,7 @@ class EditActivity : AppCompatActivity() {
                     return super.onActivityResult(requestCode, resultCode, data)
                 }
                 val copiedUri = copyImageToStorage(uri)
-                viewModel.addNewImage(copiedUri.path!!)
+                viewModel.addNewImage(copiedUri.path ?: throw RuntimeException())
             }
             REQUEST_CAMERA -> {
                 viewModel.addNewImage(imageUri.toString())
@@ -178,10 +178,10 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun updateMenuItem() {
-        menu ?: return
-        val isEditing = viewModel.isEditing.value!!
-        val editButton = menu!!.findItem(R.id.editButton)
-        val saveButton = menu!!.findItem(R.id.saveButton)
+        if (!::menu.isInitialized) return
+        val isEditing = viewModel.isEditing.value ?: false
+        val editButton = menu.findItem(R.id.editButton)
+        val saveButton = menu.findItem(R.id.saveButton)
         if (isEditing) {
             editButton.isVisible = false
             saveButton.isVisible = true
