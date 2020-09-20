@@ -1,9 +1,6 @@
 package com.seunghyun.linememo.ui.edit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
 import com.seunghyun.linememo.utils.Event
@@ -25,6 +22,10 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     val content = MutableLiveData("")
 
     var hasChanges = false
+
+    private val titleChangeDetectObserver = ChangeDetectObserver<String>()
+    private val contentChangeDetectObserver = ChangeDetectObserver<String>()
+    private val imageItemsChangeDetectObserver = ChangeDetectObserver<ArrayList<ImageItem>>()
 
     init {
         if (inputMemo == null) _isEditing.value = true
@@ -114,29 +115,26 @@ class EditViewModel(private val repository: MemoRepository, private val inputMem
     }
 
     private fun startObservingChanges() {
-        var isTitleObservedFirst = true
-        title.observeForever {
-            if (isTitleObservedFirst) {
-                isTitleObservedFirst = false
-                return@observeForever
+        title.observeForever(titleChangeDetectObserver)
+        content.observeForever(contentChangeDetectObserver)
+        imageItems.observeForever(imageItemsChangeDetectObserver)
+    }
+
+    override fun onCleared() {
+        title.removeObserver(titleChangeDetectObserver)
+        content.removeObserver(contentChangeDetectObserver)
+        imageItems.removeObserver(imageItemsChangeDetectObserver)
+    }
+
+    inner class ChangeDetectObserver<T> : Observer<T> {
+        private var isFirstObserve = true
+
+        override fun onChanged(t: T) {
+            if (isFirstObserve) {
+                isFirstObserve = false
+                return
             }
-            if (isEditing.value!!) hasChanges = true
-        }
-        var isContentObservedFirst = true
-        content.observeForever {
-            if (isContentObservedFirst) {
-                isContentObservedFirst = false
-                return@observeForever
-            }
-            if (isEditing.value!!) hasChanges = true
-        }
-        var isImagesObservedFirst = true
-        imageItems.observeForever {
-            if (isImagesObservedFirst) {
-                isImagesObservedFirst = false
-                return@observeForever
-            }
-            if (isEditing.value!!) hasChanges = true
+            if (isEditing.value == true) hasChanges = true
         }
     }
 }
