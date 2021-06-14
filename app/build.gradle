@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 30
@@ -34,7 +35,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    //Androidx
+    // Androidx
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.core:core-ktx:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
@@ -44,23 +45,27 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.2.3"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
-    //Material
+    // Material
     implementation 'com.google.android.material:material:1.3.0'
 
-    //Room
+    // Room
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation 'androidx.room:room-ktx:2.3.0'
     kapt 'androidx.room:room-compiler:2.3.0'
     testImplementation 'androidx.room:room-testing:2.3.0'
 
-    //Glide
+    // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
-    //Gson
+    // Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    //Testing
+    // Hilt
+    implementation 'com.google.dagger:hilt-android:2.37'
+    kapt 'com.google.dagger:hilt-compiler:2.37'
+
+    // Testing
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
     androidTestImplementation 'androidx.test:core:1.3.0'
@@ -68,4 +73,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test:rules:1.3.0'
+}
+
+kapt {
+    correctErrorTypes true
 }
