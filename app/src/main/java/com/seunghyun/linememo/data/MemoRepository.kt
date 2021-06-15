@@ -1,6 +1,10 @@
 package com.seunghyun.linememo.data
 
-class MemoRepository(private val memoDao: MemoDao) {
+import javax.inject.Inject
+
+class MemoRepository @Inject constructor(
+    private val memoDao: MemoDao
+) {
     suspend fun insert(memo: Memo) = memoDao.insert(memo)
     suspend fun getAllMemos() = memoDao.loadAll()
     suspend fun update(memo: Memo) = memoDao.update(memo)

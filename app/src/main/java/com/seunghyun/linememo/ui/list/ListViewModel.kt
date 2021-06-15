@@ -8,12 +8,17 @@ import com.seunghyun.linememo.data.Memo
 import com.seunghyun.linememo.data.MemoRepository
 import com.seunghyun.linememo.utils.Event
 import com.seunghyun.linememo.utils.removeItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 const val KEY_MEMO_ITEM = "memoItem"
 
-class ListViewModel(private val repository: MemoRepository) : ViewModel() {
+@HiltViewModel
+class ListViewModel @Inject constructor(
+    private val repository: MemoRepository
+) : ViewModel() {
     private val _startActivityForResult = MutableLiveData<Event<Memo?>>()
     private val _scrollToTop = MutableLiveData<Event<Void?>>()
     private val _memos = MutableLiveData(arrayListOf<Memo>())

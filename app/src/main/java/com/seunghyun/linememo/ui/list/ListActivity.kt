@@ -8,25 +8,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.seunghyun.linememo.R
-import com.seunghyun.linememo.data.AppDatabase
 import com.seunghyun.linememo.data.Memo
-import com.seunghyun.linememo.data.MemoRepository
 import com.seunghyun.linememo.databinding.ActivityListBinding
 import com.seunghyun.linememo.ui.edit.EditActivity
-import com.seunghyun.linememo.ui.list.utils.ListViewModelFactory
 import com.seunghyun.linememo.ui.list.utils.MemoRecyclerAdapter
 import com.seunghyun.linememo.utils.EventObserver
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_list.*
 
 const val REQUEST_CREATE_MEMO = 0
 const val REQUEST_EDIT_MEMO = 1
 const val RESULT_DELETED = 5
 
+@AndroidEntryPoint
 class ListActivity : AppCompatActivity() {
-    private val viewModel: ListViewModel by viewModels {
-        val dao = AppDatabase.getInstance(this).memoDao()
-        ListViewModelFactory(MemoRepository(dao))
-    }
+    private val viewModel: ListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
