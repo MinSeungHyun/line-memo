@@ -1,8 +1,5 @@
 # LineMemo
 
-![](https://grepp-cloudfront.s3.ap-northeast-2.amazonaws.com/programmers_imgs/competition-imgs/2020-LINE-Challenge/LINE_PRGM_SNS-Thumbnail-edited.png)
-Line Android App Challenge. Using MVVM Architecture.
-
 ## Screenshots
 
 ### ListActivity
